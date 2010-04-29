@@ -1,0 +1,63 @@
+<% content_for :button_list do %>
+  <div class="right-container">
+    <%= button_to 'Novo ticket', new_ticket_path, :method => :get, :class => "green button" %>
+    <%= button_to 'Tickets', tickets_path, :method => :get, :class => "green button" %>
+<% end %>
+
+<h2>Dashboard</h2>
+
+<h3 id="active-tickets">Tickets ativos</h3>
+<div id="active-listing">
+  <table class="listing" cellspacing="0">
+  <thead>
+    <tr class="header">
+      <th>Ticket #</th>
+      <th>Assunto</th>
+      <th>Categoria</th>
+      <th>Incidente</th>
+      <th>Status</th>
+      <th>Última atualização</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @active_tickets.each do |ticket| %>
+    <tr class="<%= cycle("list-line-odd", "list-line-even", :name => "active") %>">
+      <td><%= link_to ticket.id, ticket, { :title => "Ticket ##{ticket.id}", :class => "custom" } -%></td>
+      <td><%=h truncate(ticket.subject, :length => 40) %></td>
+      <td><%= ticket.category.name %></td>
+      <td><%= ticket.incident.name %></td>
+      <td><%= ticket.status.name %></td>
+      <td><%= time_ago_in_words ticket.updated_at %> ago</td>
+    </tr>
+    <% end %>
+  </tbody>
+  </table>
+</div>
+
+<h3 id="closed-tickets">Tickets finalizados</h3>
+<div id="closed-listing">
+  <table class="listing" cellspacing="0">
+  <thead>
+    <tr class="header">
+      <th>Ticket #</th>
+      <th>Assunto</th>
+      <th>Categoria</th>
+      <th>Incidente</th>
+      <th>Status</th>
+      <th>Finalizado em</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @closed_tickets.each do |ticket| %>
+    <tr class="<%= cycle("list-line-odd", "list-line-even", :name => "closed") %>">
+      <td><%= link_to ticket.id, ticket, { :title => "Ticket ##{ticket.id}", :class => "custom" } -%></td>
+      <td><%=h truncate(ticket.subject, :length => 40) %></td>
+      <td><%= ticket.category.name %></td>
+      <td><%= ticket.incident.name %></td>
+      <td><%= ticket.status.name %></td>
+      <td><%= nice_date ticket.closed_at unless ticket.closed_at.nil? %></td>
+    </tr>
+    <% end %>
+  </tbody>
+  </table>
+</div>

@@ -1,0 +1,26 @@
+common: &shared
+  adapter: mysql
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  socket: /var/run/mysqld/mysqld.sock
+
+development:
+  database: sac_development
+  username: root
+  password: root
+  <<: *shared
+
+test: &TEST
+  database: sac_test
+  username: root
+  password: root
+  <<: *shared
+
+production:
+  database: db_production
+  username: username
+  password:
+  <<: *shared
+cucumber:
+  <<: *TEST

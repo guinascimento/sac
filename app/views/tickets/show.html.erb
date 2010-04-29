@@ -1,0 +1,63 @@
+<% content_for :button_list do %>
+<div class="right-container">
+  <%= button_to 'Novo ticket', new_ticket_path, :method => :get, :class => 'green button' -%>
+</div>
+<% end %>
+
+<div class="right" id="controls">
+<%= link_to 'Editar', edit_ticket_path(@ticket), :class => 'edit-ticket', :title => 'Edit ticket' -%> |
+<%= link_to_function 'Responder', "$('#add-comment').slideToggle();", :class => 'add-comment', :title => 'Add comment' -%> |
+<%= link_to 'Voltar', '/dashboard', :class => 'back', :title => 'Go back' -%>
+</div>
+
+<h2 class="left">Ticket #<%= @ticket.id -%></h2>
+<br class="clear"/>
+
+<%= error_messages_for :comment %>
+
+<table class="profile">
+  <tr><td class="field">Nome:</td><td colspan="3" class="value"><%=h @ticket.creator.full_name -%></td></tr>
+  <tr><td class="field">Email:</td><td colspan="3" class="value"><%=h @ticket.creator.email -%></td></tr>
+  <tr><td class="field">Assunto:</td><td colspan="3" class="value"><%=h @ticket.subject -%></td></tr>
+  <tr>
+    <td class="field">Criado em:</td><td class="value"><%= nice_date @ticket.created_at -%></td>
+    <td class="field">Atualizado em:</td><td class="value"><%= nice_date @ticket.updated_at -%></td>
+  </tr>
+  <tr>
+    <td class="field">Categoria:</td><td class="value"><%= @ticket.category.name -%></td>
+    <td class="field">Incidente:</td><td class="value"><%= @ticket.incident.name -%></td>
+  </tr>
+  <tr>
+    <td class="field">Status:</td><td colspan="3" class="value"><%= @ticket.status.name -%></td>
+  </tr>
+  <tr><td class="field-row" colspan="4">Mensagem:</td></tr>
+  <tr><td class="value-row" colspan="4"><%= simple_format(@ticket.message) -%></td></tr>
+</table>
+
+<div id="add-comment">
+<% form_for [@ticket, Comment.new] do |f| %>
+  <p>
+    <%= select_tag :template, options_for_select([ '', 'Template 1', 'Template 2' ]), :style => "width: 130px", :class => "selectbox" %>
+  </p>
+  <p>
+    <%= f.text_area :comment, :size => "70x6", :class => "textarea" %>
+  </p>
+  <p><%= f.submit "Adicionar", :class => "button" %>&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#add-comment').slideToggle();" -%></p>
+<% end %>
+
+<%= observe_field :template,
+    :method => :get,
+    :url => { :controller => 'template', :action => 'load_template', :id => params[:id] },
+    :with => 'name',
+    :update => :comment_comment %>
+
+</div>
+
+<br>
+
+<% unless @ticket.comments.empty? -%>
+  <h3 id="comments-toggle">Respostas</h3>
+  <div id="comment-list">
+    <%= render :partial => @ticket.comments, :locals => { :ticket => @ticket } -%>
+  </div>
+<% end -%>

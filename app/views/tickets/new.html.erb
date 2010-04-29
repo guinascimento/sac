@@ -1,0 +1,32 @@
+<h2>Novo ticket</h2>
+
+<%= error_messages_for :ticket -%>
+
+<% form_for @ticket do |f| -%>
+<dl>
+<dt>Nome:</dt>
+<dd><%= @ticket.creator.full_name -%></dd>
+
+<dt>Email:</dt>
+<dd><%= @ticket.creator.email -%></dd>
+
+<dt><%= f.label :subject, 'Assunto' %></dt>
+<dd><%= f.text_field :subject, {:style => "width: 440px", :class => "textfield" } -%></dd>
+
+<dt><%= f.label :category_id, 'Categoria' %></dt>
+<dd><%= select 'ticket','category_id', Category.find(:all).collect {|g| [ g.name, g.id ] }, { :include_blank => true }, :class => "selectbox" -%></dd>
+
+<dt><%= f.label :incident_id, 'Incidente' %>
+<dd><%= select 'ticket','incident_id', Incident.find(:all).collect {|p| [ p.name, p.id ] }, { :include_blank => true }, { :style => "width: 130px", :class => "selectbox" } -%></dd>
+
+
+
+<dt><%= f.label :message, 'Mensagem' %></dt>
+<dd><%= f.text_area :message, :size => "70x6", :class => "textarea" -%></dd>
+
+
+
+<dd><%= f.submit 'Criar', :class => "button" -%>&nbsp;&nbsp;<%= link_to 'Cancel', '/dashboard' -%></dd>
+</dl>
+
+<% end -%>
