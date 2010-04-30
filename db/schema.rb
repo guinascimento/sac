@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100429173518) do
+ActiveRecord::Schema.define(:version => 20100428164733) do
 
   create_table "alerts", :id => false, :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -81,18 +81,6 @@ ActiveRecord::Schema.define(:version => 20100429173518) do
   create_table "statuses", :force => true do |t|
     t.string   "name",        :null => false
     t.datetime "disabled_at"
-  end
-
-  create_table "template_comments", :force => true do |t|
-    t.string   "name",       :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "templates", :force => true do |t|
-    t.string   "name",       :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "tickets", :force => true do |t|

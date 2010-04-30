@@ -1,0 +1,6 @@
+Instruções
+
+rake db:create
+rake db:migrate
+
+script/server
