@@ -14,7 +14,6 @@ Then /^I should see the following tickets:$/ do |expected_tickets_table|
 end
 
 Given /^there are open tickets:$/ do |table|
-  puts ENV["RAILS_ENV"]
   current_user = User.create!(:first_name => "Guilherme", :last_name => "Nascimento", :email => "javaplayer@gmail.com")
 
   table.hashes.each do |hash|

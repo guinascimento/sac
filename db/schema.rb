@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(:version => 20100428164733) do
     t.string   "email"
     t.string   "first_name"
     t.string   "last_name"
+    t.integer  "equipe"
   end
 
 end

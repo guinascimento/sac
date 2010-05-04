@@ -117,10 +117,10 @@ form a:hover { color: #90af4c; }
 #errorExplanation ul { padding: 0 0 0 15px; }
 .validation-error { font-size: 11px; color: #c00; font-style: italic; font-weight: normal; }
 
-.flash { margin-bottom: 16px; padding: 5px 5px 5px 25px; position: relative; background: #efe url('../images/accept.png') 5px center no-repeat; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+.flash { margin-bottom: 16px; padding: 5px 5px 5px 25px; position: relative; background: #efe 5px center no-repeat; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 .flash p { margin: 0 !important; padding: 2px; background: transparent; color: #585; }
-.f-warning { background: #ffd url('../images/error.png') 5px center no-repeat; }
-.f-error { background: #fee url('../images/exclamation.png') 5px center no-repeat; }
+.f-warning { background: #ffd 5px center no-repeat; }
+.f-error { background: #fee 5px center no-repeat; }
 .f-warning p { color: #da9b25; }
 .f-error p { color: #c00; }
 

@@ -1,7 +1,7 @@
 Feature: Manage tickets
   In order Manage a ticket
-  As an user
-  I want to create, edit and delete a ticket
+  As an atendent
+  I want to create and edit a ticket
 
   Scenario: List all active tickets
     Given there are open tickets:

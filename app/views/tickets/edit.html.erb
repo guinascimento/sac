@@ -22,6 +22,9 @@
 <dt><%= f.label :incident_id, 'Situação' %>
 <dd><%= select 'ticket','status_id', Status.find(:all).collect {|p| [ p.name, p.id ] }, { :include_blank => true }, { :style => "width: 130px", :class => "selectbox" } -%></dd>
 
+<dt>Responsável:</dt>
+<dd><%= select 'ticket','owned_by',User.find(:all, :conditions => [ "equipe = ?", 1 ]).collect {|u| [ u.full_name, u.id ] }, { :include_blank => true }, { :style => "width: 130px", :class => "selectbox" } -%></dd>
+
 <dt><%= f.label :message, 'Mensagem' %></dt>
 <dd><%= f.text_area :message, :size => "70x6", :class => "textarea" -%></dd>
 

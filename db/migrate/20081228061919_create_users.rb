@@ -6,6 +6,7 @@ class CreateUsers < ActiveRecord::Migration
     add_column :users, :email, :string
     add_column :users, :first_name, :string
     add_column :users, :last_name, :string
+    add_column :users, :equipe, :integer
   end
 
   def self.down

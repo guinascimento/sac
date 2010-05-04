@@ -3,6 +3,7 @@ class TemplateController < ApplicationController
   def load_template
     template_dir = Rails.root + 'templates/'
     option = params[:name]
+    puts option
 
     if option == "Template 1"
       template = template_dir + "template1"

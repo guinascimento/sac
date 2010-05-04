@@ -5,8 +5,8 @@
 <% end %>
 
 <div class="right" id="controls">
-<%= link_to 'Editar', edit_ticket_path(@ticket), :class => 'edit-ticket', :title => 'Edit ticket' -%> |
-<%= link_to_function 'Responder', "$('#add-comment').slideToggle();", :class => 'add-comment', :title => 'Add comment' -%> |
+<%= link_to 'Editar', edit_ticket_path(@ticket), :class => 'edit-ticket', :title => 'Editar' -%> |
+<%= link_to_function 'Responder', "$('#add-comment').slideToggle();", :class => 'add-comment', :title => 'Responder' -%> |
 <%= link_to 'Voltar', '/dashboard', :class => 'back', :title => 'Go back' -%>
 </div>
 
@@ -28,8 +28,20 @@
     <td class="field">Incidente:</td><td class="value"><%= @ticket.incident.name -%></td>
   </tr>
   <tr>
-    <td class="field">Status:</td><td colspan="3" class="value"><%= @ticket.status.name -%></td>
+    <td class="field">Situação:</td><td colspan="3" class="value"><%= @ticket.status.name -%></td>
   </tr>
+
+  <%
+    if @ticket.has_owner?
+  %>
+      <tr>
+        <td class="field">Responsável:</td>
+        <td colspan="3" class="value"><%= @ticket.owner.full_name %></td>
+      </tr>
+  <%
+    end
+  %>
+
   <tr><td class="field-row" colspan="4">Mensagem:</td></tr>
   <tr><td class="value-row" colspan="4"><%= simple_format(@ticket.message) -%></td></tr>
 </table>
@@ -40,7 +52,7 @@
     <%= select_tag :template, options_for_select([ '', 'Template 1', 'Template 2' ]), :style => "width: 130px", :class => "selectbox" %>
   </p>
   <p>
-    <%= f.text_area :comment, :size => "70x6", :class => "textarea" %>
+    <%= f.text_area :comment, :size => "70x6", :class => "textarea", :id => "Resposta" %>
   </p>
   <p><%= f.submit "Adicionar", :class => "button" %>&nbsp;&nbsp;<%= link_to_function "Cancel", "$('#add-comment').slideToggle();" -%></p>
 <% end %>
@@ -49,7 +61,7 @@
     :method => :get,
     :url => { :controller => 'template', :action => 'load_template', :id => params[:id] },
     :with => 'name',
-    :update => :comment_comment %>
+    :update => 'Resposta' %>
 
 </div>
 

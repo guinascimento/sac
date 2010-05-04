@@ -8,18 +8,6 @@ class TicketsController < ApplicationController
     @open_status = Status.find(:first, :select => 'id', :conditions => "name = 'Novo'")
 
     if params[:search]
-      if !params[:search][:created_at_gte].blank?
-        start_date = Date.strptime(params[:search][:created_at_gte],"%Y-%m-%d")
-        @search.created_at_gte = start_date
-        start_date = start_date.midnight.gmtime
-        params[:search][:created_at_gte] = start_date.midnight
-      end
-      if !params[:search][:created_at_lt].blank?
-        end_date = Date.strptime(params[:search][:created_at_lt],"%Y-%m-%d")
-        @search.created_at_lt = end_date
-        end_date = end_date.next.midnight.gmtime
-        params[:search][:created_at_lt] = end_date.midnight
-      end
       @tickets = Ticket.search(params[:search]).paginate(
         :page => params[:page],
         :include => [:creator, :owner, :category, :status, :incident],
@@ -47,7 +35,7 @@ class TicketsController < ApplicationController
       @ticket = Ticket.find(params[:id], :include => { :comments => :user })
     rescue ActiveRecord::RecordNotFound
       logger.error(":::Attempt to access invalid ticket_id => #{params[:id]}")
-      flash[:error] = "You have requested an invalid ticket!"
+      flash[:error] = "Você requisitou um ticket inválido!"
       redirect_to tickets_path and return
     end
 
@@ -72,6 +60,8 @@ class TicketsController < ApplicationController
   end
 
   def edit
+    @owners = User.find_by_equipe(1)
+
     begin
       @ticket = Ticket.find(params[:id])
     rescue ActiveRecord::RecordNotFound
