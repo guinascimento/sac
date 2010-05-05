@@ -9,14 +9,12 @@ class TicketsController < ApplicationController
       @tickets = Ticket.search(params[:search]).paginate(
         :page => params[:page],
         :include => [:creator, :owner, :category, :status, :incident],
-        :order => 'updated_at DESC',
-        :per_page => @tickets_per_page)
+        :order => 'updated_at DESC')
     else
       @tickets = Ticket.all.paginate(
         :page => params[:page],
         :include => [:creator, :owner, :category, :status, :incident],
-        :order => 'updated_at DESC',
-        :per_page => @tickets_per_page)
+        :order => 'updated_at DESC')
     end    
 
     respond_to do |format|
