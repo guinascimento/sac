@@ -23,36 +23,23 @@ class Ticket < ActiveRecord::Base
   named_scope :active_tickets, :limit => 5, :include => [:creator, :owner, :category, :status, :incident], :order => ['updated_at DESC']
   named_scope :closed_tickets, :limit => 5, :joins => :status, :include => [:creator, :owner, :category, :status, :incident], :conditions => [ "statuses.name = ? AND owned_by = ?", "Finalizado", 1 ], :order => ['closed_at DESC']
 
-  def self.timeline_opened_tickets(from_date, to_date)
-    self.count(:group => 'date(created_at)', :having => ['date_created_at >= ? and date_created_at < ?', from_date, to_date], :order => 'date_created_at')
-  end
-
-  def self.timeline_closed_tickets(from_date, to_date)
-    self.count(:group => 'date(closed_at)', :having => ['date_closed_at >= ? and date_closed_at < ?', from_date, to_date], :order => 'date_closed_at')
-  end
-
   def closed?
     status.name == 'Finalizado'
-  end
+  end  
 
   def has_owner?
     owner != nil
   end
 
-  def only_touched?
-    self.changed.size == 1 and self.changed[0] == "updated_at"
-  end
-
   protected
 
-  def set_closed_at
-    # update the closed_at timestamp if the ticket is being closed
-    if closed?
-      logger.info("Ticket is being closed!")
-      self.closed_at = DateTime.now if self.closed_at.nil?
-    else
-      self.closed_at = nil unless self.closed_at.nil?
+    def set_closed_at
+      # update the closed_at timestamp if the ticket is being closed
+      if closed?        
+        self.closed_at = DateTime.now if self.closed_at.nil?
+      else
+        self.closed_at = nil unless self.closed_at.nil?
+      end
     end
-  end
 
 end

@@ -1,8 +1,6 @@
 class TicketsController < ApplicationController
-  before_filter :lookup_ticket, :only => [:edit, :update, :destroy]
 
-  def index
-    @tickets_per_page = tickets_per_page
+  def index    
     @search = Ticket.search(params[:search])
     @closed_status = Status.find(:first, :select => 'id', :conditions => "name = 'Finalizado'")
     @open_status = Status.find(:first, :select => 'id', :conditions => "name = 'Novo'")
@@ -19,14 +17,10 @@ class TicketsController < ApplicationController
         :include => [:creator, :owner, :category, :status, :incident],
         :order => 'updated_at DESC',
         :per_page => @tickets_per_page)
-    end
-
-    @total_tickets = @tickets.total_entries
+    end    
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.js # index.js.erb
-      format.xml  { render :xml => @tickets }
+      format.html
     end
   end
 
@@ -75,8 +69,11 @@ class TicketsController < ApplicationController
     @ticket = Ticket.new(params[:ticket])
 
     # GET CURRENT_USER FROM SESSION
+    default_owner = User.find(:first, :conditions => [ "first_name = ? AND equipe = ?", "Joana", 1 ])
+
     current_user = User.create!(:first_name => "Guilherme", :last_name => "Nascimento", :email => "javaplayer@gmail.com")
     @ticket.creator = current_user
+    @ticket.owner = default_owner
 
     # setting initial status to open
     open = Status.find_by_name("Novo")
@@ -116,30 +113,6 @@ class TicketsController < ApplicationController
       format.html { redirect_to(tickets_url) }
       format.xml  { head :ok }
     end
-  end
-
-  # Sets a cookie on the user's browser to indicate the tickets per page value
-  def set_tickets_per_page
-    @per_page = params[:per_page]
-    cookies[:tickets_per_page] = { :value => "#{@per_page}", :expires => 1.year.from_now }
-    flash[:success] = "You are now viewing #{@per_page} tickets per page!"
-    redirect_to tickets_path
-  end
-
-  private
-
-  def lookup_ticket
-    begin
-      @ticket = Ticket.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      logger.error(":::Attempt to access invalid ticket_id => #{params[:id]}")
-      flash[:error] = "You have requested an invalid ticket!"
-      redirect_to tickets_path and return
-    end
-  end
-
-  def set_current_tab
-    @current_tab = :tickets
   end
 
 end

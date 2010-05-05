@@ -8,7 +8,7 @@ class Status < ActiveRecord::Base
   named_scope :disabled, :order => 'name', :conditions => ['disabled_at IS NOT NULL']
 
   # Validations
-  validates_presence_of :name
+  validates_presence_of :name  
 
   def enabled?
     disabled_at.blank?

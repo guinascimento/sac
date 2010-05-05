@@ -21,7 +21,7 @@ Given /^there are open tickets:$/ do |table|
     incident = Incident.create!(:name => hash[:incident])
     status = Status.create!(:name => hash[:status])
 
-    Ticket.create!(:subject => hash[:subject], :category => category, :incident => incident, :status => status, :message => hash[:message], :creator => current_user)
+    Ticket.create!(:subject => hash[:subject], :category => category, :incident => incident, :status => status, :message => hash[:message], :creator => current_user, :owner => current_user)    
   end
 end
 
@@ -33,6 +33,6 @@ Given /^there are closed tickets:$/ do |table|
     incident = Incident.create!(:name => hash[:incident])
     status = Status.create!(:name => hash[:status])
 
-    Ticket.create!(:subject => hash[:subject], :category => category, :incident => incident, :status => status, :message => hash[:message], :creator => current_user)
+    Ticket.create!(:subject => hash[:subject], :category => category, :incident => incident, :status => status, :message => hash[:message], :creator => current_user, :owner => current_user)
   end
 end
